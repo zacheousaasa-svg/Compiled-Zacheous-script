@@ -256,6 +256,53 @@ def generate_figure_2_schematic():
     plt.savefig("results/plots/figure2_network_schematic.png", dpi=1200, bbox_inches='tight')
     plt.close()
 
+import matplotlib.pyplot as plt
+import numpy as np
+
+# Data
+zeta = np.array([0.1, 0.2, 0.4, 0.6, 0.8, 1.0])
+sum_rate = np.array([48.8, 49.3, 50.1, 49.9, 48.9, 47.8])
+qos = np.array([88, 91, 95, 97, 98, 99])
+
+plt.figure(figsize=(7,5))
+
+ax1 = plt.gca()
+ax1.plot(zeta, sum_rate,
+         marker='o',
+         linewidth=2.5,
+         markersize=7,
+         label='Sum-rate')
+ax1.set_xlabel(r'Penalty Coefficient ($\zeta$)', fontsize=12)
+ax1.set_ylabel('Average Sum-rate (bps/Hz)', fontsize=12)
+ax1.grid(True)
+
+ax2 = ax1.twinx()
+ax2.plot(zeta,
+         qos,
+         marker='s',
+         linewidth=2.5,
+         markersize=7,
+         label='QoS Satisfaction')
+ax2.set_ylabel('QoS Satisfaction (%)', fontsize=12)
+
+lines1, labels1 = ax1.get_legend_handles_labels()
+lines2, labels2 = ax2.get_legend_handles_labels()
+
+ax1.legend(lines1 + lines2,
+           labels1 + labels2,
+           loc='lower right',
+           fontsize=10)
+
+plt.tight_layout()
+
+plt.savefig(
+    "Figure3_Zeta_Sensitivity.png",
+    dpi=1200,
+    bbox_inches='tight')
+
+plt.show()
+
+
 def generate_figure_3_convergence(td3_history, ddpg_history):
     import numpy as np
 import matplotlib.pyplot as plt
@@ -422,6 +469,41 @@ def generate_figure_4b_scaling():
     plt.tight_layout()
     plt.savefig("results/plots/figure4_surface_scaling.png", dpi=1200, bbox_inches='tight')
     plt.close()
+
+import matplotlib.pyplot as plt
+import numpy as np
+
+labels = ['1-bit','2-bit','3-bit','Continuous']
+spectral_efficiency = [43.5,46.8,48.9,50.1]
+
+plt.figure(figsize=(7,5))
+
+plt.bar(labels,
+        spectral_efficiency,
+        width=0.6)
+
+plt.ylabel('Spectral Efficiency (bps/Hz)', fontsize=12)
+plt.xlabel('RIS Phase Resolution', fontsize=12)
+
+plt.ylim(40,52)
+
+for i,v in enumerate(spectral_efficiency):
+    plt.text(i,
+             v+0.15,
+             f'{v:.1f}',
+             ha='center',
+             fontsize=10)
+
+plt.grid(axis='y')
+
+plt.tight_layout()
+
+plt.savefig(
+    "Figure6_RIS_Quantization.png",
+    dpi=1200,
+    bbox_inches='tight')
+
+plt.show()
 
 # =====================================================================
 # MODULE 5: EXPERIMENTAL REINFORCEMENT LEARNING PROCESSING
